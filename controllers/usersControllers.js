@@ -1,4 +1,4 @@
-const Users = require('../repository/users');
+const Users = require('../repository/usersRepository');
 const { HttpCode } = require('../config/constants');
 require('dotenv').config();
 const { CustomError } = require('../helpers/custom_error');
