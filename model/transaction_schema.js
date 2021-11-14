@@ -35,3 +35,7 @@ const transactionsSchema = new Schema(
     toObject: { virtuals: true },
   },
 );
+
+const transactionsSchema = mongoose.model("transactions", transactionsSchema);
+
+module.exports = transactionsSchema;
