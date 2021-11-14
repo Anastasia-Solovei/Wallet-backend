@@ -28,7 +28,6 @@ const signup = async (req, res, next) => {
   } catch (e) {
     next(e);
   }
-  res.json();
 };
 
 module.exports = {
