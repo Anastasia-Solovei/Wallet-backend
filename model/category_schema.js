@@ -1,16 +1,21 @@
-const { Schema, model, SchemaTypes, Mongoose } = require("mongoose");
+const { Schema, model, SchemaTypes } = require("mongoose");
 
-const CategoriesSchema = new Schema({
+const categoriesSchema = new Schema({
     name: {
         type: String,
+        required: true,
     },
     color: {
         type: String,
+        default: "#FED057",
     },
-    owner: SchemaTypes.ObjectId,
-    ref: "user",
-},
-{
+    owner: {
+        type: SchemaTypes.ObjectId,
+        ref: "user",
+        required: true,
+    },
+  },
+  {
     versionKey: false,
     timestamps: true,
     toJSON: {
@@ -19,10 +24,9 @@ const CategoriesSchema = new Schema({
         delete ret._id;
         return ret;
       },
-    },
-  }
-);
+    }
+  });
 
-const categories = mongoose.model("categories", CategoriesSchema);
+const Categories = model("categories", categoriesSchema);
 
-module.exports = categories;
+module.exports = Categories;

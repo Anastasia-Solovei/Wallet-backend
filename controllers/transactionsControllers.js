@@ -1,4 +1,4 @@
-const Transactions = require('../model/transaction_schema');
+const Transactions = require('../repository/transactionsRepository');
 const { HttpCode } = require('../config/constants');
 // const {CustomError} = require('../helpers/custom_error');
 
