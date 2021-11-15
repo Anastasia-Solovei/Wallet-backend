@@ -9,13 +9,11 @@ const addTransaction = async (req, res, next) => {
       ...req.body,
       owner: userId,
     });
-    return res
-      .status(HttpCode.CREATED)
-      .json({
-        status: 'success',
-        code: HttpCode.CREATED,
-        data: { transaction },
-      });
+    return res.status(HttpCode.CREATED).json({
+      status: 'success',
+      code: HttpCode.CREATED,
+      data: { transaction },
+    });
   } catch (error) {
     next(error);
   }
