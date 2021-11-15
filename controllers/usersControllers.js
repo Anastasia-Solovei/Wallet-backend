@@ -13,7 +13,7 @@ const signup = async (req, res, next) => {
     return res.status(HttpCode.CONFLICT).json({
       status: 'error',
       code: HttpCode.CONFLICT,
-      message: 'Email is exist',
+      message: 'Email is already in use',
     });
   }
 
@@ -31,8 +31,8 @@ const signup = async (req, res, next) => {
   } catch (e) {
     next(e);
   }
-  res.json();
 };
+
 // add login controller
 const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -59,6 +59,7 @@ const login = async (req, res, next) => {
     },
   });
 };
+
 // add logout controller
 const logout = async (req, res, next) => {
   const id = req.user.id;
