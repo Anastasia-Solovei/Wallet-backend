@@ -4,22 +4,34 @@ const transactionsSchema = new Schema(
   {
     type: {
       type: String,
+      enum: ['incomes', 'expenses'],
+      default: 'incomes',
     },
     category: {
-      type: String,
+      type: SchemaTypes.ObjectId,
+      ref: 'category',
+      required: true,
     },
     amount: {
       type: Number,
+      min: 0,
+      required: true,
     },
     date: {
       type: Number,
+      default: new Date().toLocaleDateString(),
     },
     comment: {
       type: String,
+      default: '',
+    },
+    balance: {
+      type: Number,
     },
     owner: {
       type: SchemaTypes.ObjectId,
       ref: 'user',
+      required: true,
     },
   },
   {
@@ -36,6 +48,6 @@ const transactionsSchema = new Schema(
   },
 );
 
-const transactions = model("transactions", transactionsSchema);
+const Transactions = model("transactions", transactionsSchema);
 
-module.exports = transactions;
+module.exports = Transactions;
