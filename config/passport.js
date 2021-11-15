@@ -21,9 +21,7 @@ passport.use(
       }
       return done(null, user);
     } catch (err) {
-      if (err) {
         return done(err, false);
-      }
     }
   }),
 );
