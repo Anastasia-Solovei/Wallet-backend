@@ -8,9 +8,8 @@ const transactionsSchema = new Schema(
       default: 'incomes',
     },
     category: {
-      type: SchemaTypes.ObjectId,
-      ref: 'category',
-      required: true,
+      type: String,
+      default: "Other"
     },
     amount: {
       type: Number,
@@ -18,7 +17,7 @@ const transactionsSchema = new Schema(
       required: true,
     },
     date: {
-      type: Number,
+      type: String,
       default: new Date().toLocaleDateString(),
     },
     comment: {
