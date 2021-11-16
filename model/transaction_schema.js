@@ -27,11 +27,6 @@ const transactionsSchema = new Schema(
     balance: {
       type: Number,
     },
-    owner: {
-      type: SchemaTypes.ObjectId,
-      ref: 'user',
-      required: true,
-    },
   },
   {
     versionKey: false,
