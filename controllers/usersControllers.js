@@ -67,8 +67,34 @@ const logout = async (req, res, next) => {
   return res.status(HttpCode.NO_CONTENT).json({ test: 'test' });
 };
 
+// add controller of current user
+const current = async (req, res, next) => {
+  const id = req.user._id;
+  const user = await Users.findById(id);
+
+  if (!user) {
+    return res.status(HttpCode.UNAUTHORIZED).json({
+      status: 'error',
+      code: HttpCode.UNAUTHORIZED,
+      message: 'Invalid creadentials',
+    });
+  }
+
+  return res.status(HttpCode.OK).json({
+    status: 'success',
+    code: HttpCode.OK,
+    data: {
+      user: {
+        name: user.name,
+        email: user.email,
+      },
+    },
+  });
+};
+
 module.exports = {
   signup,
   login,
   logout,
+  current,
 };
