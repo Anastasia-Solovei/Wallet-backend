@@ -1,8 +1,10 @@
 const express = require('express');
 const transactionsRouter = express.Router();
+const guard = require('../../helpers/guard');
 
-const { addTransaction } = require('../../controllers/transactionsControllers');
+const { getAllTransactions, addTransaction } = require('../../controllers/transactionsControllers');
 
-transactionsRouter.post('/new', addTransaction);
+transactionsRouter.get('/all', guard, getAllTransactions);
+transactionsRouter.post('/new', guard, addTransaction);
 
 module.exports = transactionsRouter;
