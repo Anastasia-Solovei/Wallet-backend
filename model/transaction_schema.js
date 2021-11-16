@@ -1,31 +1,32 @@
 const { Schema, model, SchemaTypes } = require('mongoose');
 
-const transactionsSchema = new Schema(
+const transactionSchema = new Schema(
   {
     type: {
-      type: String,
+      type: SchemaTypes.String,
       enum: ['incomes', 'expenses'],
       default: 'incomes',
     },
-    category: {
-      type: String,
-      default: "Other"
-    },
     amount: {
-      type: Number,
+      type: SchemaTypes.Number,
       min: 0,
       required: true,
     },
     date: {
-      type: String,
+      type: SchemaTypes.String,
       default: new Date().toLocaleDateString(),
     },
     comment: {
-      type: String,
+      type: SchemaTypes.String,
       default: '',
     },
     balance: {
-      type: Number,
+      type: SchemaTypes.Number,
+    },
+    owner: {
+      type: SchemaTypes.ObjectId,
+      ref: 'user',
+      required: true,
     },
   },
   {
@@ -42,6 +43,6 @@ const transactionsSchema = new Schema(
   },
 );
 
-const Transactions = model("transactions", transactionsSchema);
+const Transaction = model("transaction", transactionSchema);
 
-module.exports = Transactions;
+module.exports = Transaction;
