@@ -9,13 +9,12 @@ const getAllTransactions = async (req, res, next) => {
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
-      data: { total: transaction.length,
-      transaction },
+      data: { total: transaction.length, transaction },
     });
   } catch (error) {
     next(error);
   }
-}
+};
 
 const addTransaction = async (req, res, next) => {
   try {
@@ -24,6 +23,27 @@ const addTransaction = async (req, res, next) => {
       ...req.body,
       owner: userId,
     });
+    return res.status(HttpCode.CREATED).json({
+      status: 'success',
+      code: HttpCode.CREATED,
+      data: { transaction },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+const getStatistics = async (req, res, next) => {
+  try {
+    const { month, year } = req.query;
+    const userId = req.user._id;
+
+    const statistics = await Transactions.getStatistics({
+      ...req.body,
+      owner: userId,
+    });
+
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
@@ -63,9 +83,14 @@ const deleteTransactionById = async (req, res) => {
 }
 
 
+
 module.exports = {
   getAllTransactions,
   addTransaction,
+
+  getStatistics,
+
   editTransactionById,
   deleteTransactionById,
+
 };

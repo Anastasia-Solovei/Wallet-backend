@@ -1,5 +1,10 @@
 const Transaction = require('../model/transaction_schema');
 
+//not work
+const getStatistics = body => {
+  return;
+};
+
 const getAllTransactions = async (userId) => {
     return await Transaction.find({owner: userId})
 }
@@ -24,8 +29,10 @@ const deleteTransaction = async (transactionId, userId) => {
 };
 
 module.exports = {
-    getAllTransactions,
-    addTransaction,
-    editTransaction,
-    deleteTransaction,
+  getStatistics,
+  getAllTransactions,
+  addTransaction,
+  editTransaction,
+  deleteTransaction,
 }
+
