@@ -16,10 +16,22 @@ const create = async options => {
 const updateToken = async (id, token) => {
   return await User.updateOne({ _id: id }, { token });
 };
+// add updateEmailVerificationToken for user
+const updateEmailVerificationToken = async (
+  id,
+  isVerified,
+  emailVerificationToken,
+) => {
+  return await User.updateOne(
+    { _id: id },
+    { isVerified, emailVerificationToken },
+  );
+};
 
 module.exports = {
   findById,
   findByEmail,
   create,
   updateToken,
+  updateEmailVerificationToken,
 };
