@@ -1,5 +1,5 @@
 const Category = require('../model/category_schema');
-const { expensesСategories } = require('../assets/constants');
+const { expensesСategories } = require('../config/constants');
 
 const getAllCategories = async () => {
   const data = expensesСategories;
