@@ -11,5 +11,15 @@ const HttpCode = {
   TOO_MANY_REQUESTS: 429,
   INTERNAL_SERVER_ERROR: 500,
 };
-
-module.exports = { HttpCode };
+const expensesСategories = [
+  'Main',
+  'Food',
+  'Car',
+  'Me',
+  'Children',
+  'House',
+  'Education',
+  'Leisure',
+  'Other',
+];
+module.exports = { HttpCode, expensesСategories };

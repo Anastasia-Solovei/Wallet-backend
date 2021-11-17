@@ -1,12 +1,9 @@
 const Category = require('../model/category_schema');
+const { expensesСategories } = require('../config/constants');
 
 const getAllCategories = async () => {
-  try {
-    const data = await Category.find({});
-    return data;
-  } catch (error) {
-    next(error);
-  }
+  const data = expensesСategories;
+  return data;
 };
 
 module.exports = {

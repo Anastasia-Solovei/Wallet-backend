@@ -4,6 +4,13 @@ const getAllCategories = require('./categoriesRepository');
 
 //not work
 
+// const getStatistics = async (month, year, userId) => {
+//   const expensesByCategories = await getAllCategories.map(category => {
+//     Transaction.find({ category, month, year, userId });
+//   });
+//   return expensesByCategories;
+// };
+
 const getStatistics = async (month, year, userId) => {
   const expensesByCategories = await getAllCategories.map(category => {
     Transaction.find({ category, month, year, userId });
