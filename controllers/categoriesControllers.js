@@ -8,7 +8,7 @@ const getAllCategories = async (req, res, next) => {
       ...req.body,
       owner: userId,
     });
-    console.log(categories);
+
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.OK,
