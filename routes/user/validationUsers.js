@@ -4,14 +4,22 @@ const { HttpCode } = require('../../config/constants');
 const patternPassword = '^[a-zA-Z0-9]{5,20}$';
 
 const schemaUserRegistration = Joi.object({
-  name: Joi.string().min(1).max(30).required(),
+  name: Joi.string().min(1).max(12).required(),
   email: Joi.string().email().required(),
-  password: Joi.string().min(6).pattern(new RegExp(patternPassword)).required(),
+  password: Joi.string()
+    .min(6)
+    .max(12)
+    .pattern(new RegExp(patternPassword))
+    .required(),
 });
 
 const schemaUserLogin = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().min(6).pattern(new RegExp(patternPassword)).required(),
+  password: Joi.string()
+    .min(6)
+    .max(12)
+    .pattern(new RegExp(patternPassword))
+    .required(),
 });
 
 const validate = async (schema, obj, res, next) => {
