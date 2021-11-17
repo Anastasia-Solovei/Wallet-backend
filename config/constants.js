@@ -12,6 +12,7 @@ const HttpCode = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
+
 const Category = {
   expenses: [
     'food',
@@ -26,4 +27,17 @@ const Category = {
   incomes: ["incomes"],
 }
 
-module.exports = { HttpCode, Category };
+const expensesСategories = [
+  'Main',
+  'Food',
+  'Car',
+  'Me',
+  'Children',
+  'House',
+  'Education',
+  'Leisure',
+  'Other',
+];
+
+module.exports = { HttpCode, expensesСategories, Category};
+
