@@ -1,18 +1,24 @@
-const { Schema, model, SchemaTypes } = require("mongoose");
+const { Schema, model, SchemaTypes } = require('mongoose');
 
-const categoriesSchema = new Schema({
+const categorySchema = new Schema(
+  {
     name: {
-        type: String,
-        required: true,
+      type: SchemaTypes.String,
+      enum: [
+        'food',
+        'car',
+        'me',
+        'children',
+        'house',
+        'education',
+        'leisure',
+        'other',
+      ],
+      default: 'other',
     },
     color: {
-        type: String,
-        default: "#FED057",
-    },
-    owner: {
-        type: SchemaTypes.ObjectId,
-        ref: "user",
-        required: true,
+      type: SchemaTypes.String,
+      default: '#FED057',
     },
   },
   {
@@ -24,9 +30,10 @@ const categoriesSchema = new Schema({
         delete ret._id;
         return ret;
       },
-    }
-  });
+    },
+  },
+);
 
-const Categories = model("categories", categoriesSchema);
+const Category = model('category', categorySchema);
 
-module.exports = Categories;
+module.exports = Category;
