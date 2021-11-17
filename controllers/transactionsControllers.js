@@ -1,6 +1,6 @@
 const Transactions = require('../repository/transactionsRepository');
 const { HttpCode } = require('../config/constants');
-const {CustomError} = require('../helpers/custom_error');
+const { CustomError } = require('../helpers/custom_error');
 
 const getAllTransactions = async (req, res, next) => {
   try {
@@ -33,7 +33,6 @@ const addTransaction = async (req, res, next) => {
   }
 };
 
-
 const getStatistics = async (req, res, next) => {
   try {
     const { month, year } = req.query;
@@ -47,7 +46,7 @@ const getStatistics = async (req, res, next) => {
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
-      data: { transaction },
+      statistics: { monthStatistic },
     });
   } catch (error) {
     next(error);
@@ -59,30 +58,31 @@ const editTransactionById = async (req, res, next) => {
   const transaction = await Transactions.editTransaction(
     req.params.transactionId,
     req.body,
-    userId
-  )
+    userId,
+  );
 
   if (transaction) {
     return res
       .status(200)
-      .json({ status: 'success', code: 200, data: { transaction } })
+      .json({ status: 'success', code: 200, data: { transaction } });
   }
-  throw new CustomError(404, "Not Found");
-}
+  throw new CustomError(404, 'Not Found');
+};
 
 const deleteTransactionById = async (req, res) => {
   const userId = req.user._id;
-  const transaction = await Transactions.deleteTransaction(req.params.transactionId, userId)
+  const transaction = await Transactions.deleteTransaction(
+    req.params.transactionId,
+    userId,
+  );
 
   if (transaction) {
     return res
       .status(200)
-      .json({ status: 'success', code: 200, data: { transaction } })
+      .json({ status: 'success', code: 200, data: { transaction } });
   }
-  throw new CustomError(404, "Not Found");
-}
-
-
+  throw new CustomError(404, 'Not Found');
+};
 
 module.exports = {
   getAllTransactions,
@@ -92,5 +92,4 @@ module.exports = {
 
   editTransactionById,
   deleteTransactionById,
-
 };
