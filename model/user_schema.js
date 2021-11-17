@@ -39,7 +39,7 @@ const userSchema = new Schema(
     },
     emailVerificationToken: {
       type: String,
-      required: true,
+      required: [true, 'Verify token is required'],
       default: crypto.randomUUID(),
     },
   },

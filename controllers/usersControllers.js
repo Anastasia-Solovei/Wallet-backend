@@ -5,7 +5,7 @@ require('dotenv').config();
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 const { CustomError } = require('../helpers/custom_error');
 const EmailService = require('../services/email/service');
-const { CreateSenderSendGrid } = require('../services/email/sender');
+const CreateSenderSendGrid = require('../services/email/sender');
 
 // add registration controller
 const signup = async (req, res, next) => {
@@ -27,7 +27,7 @@ const signup = async (req, res, next) => {
       new CreateSenderSendGrid(),
     );
 
-    const isVerifiedEmail = await emailService.sendVerificationEmail(
+    await emailService.sendVerificationEmail(
       newUser.email,
       newUser.name,
       newUser.emailVerificationToken,
@@ -40,7 +40,6 @@ const signup = async (req, res, next) => {
         id: newUser.id,
         name: newUser.name,
         email: newUser.email,
-        verificationEmail: isVerifiedEmail,
       },
     });
   } catch (e) {
@@ -107,9 +106,54 @@ const current = async (req, res, next) => {
   });
 };
 
-const verifyUser = async (req, res, next) => {};
+const verifyUser = async (req, res, next) => {
+  const { emailVerificationToken } = req.params;
+  const user = await Users.findUserByVerificationToken(emailVerificationToken);
 
-const resendVerificationEmail = (req, res, next) => {};
+  // if (!user) {
+  //   return res.status(HttpCode.NOT_FOUND).json({
+  //     status: 'error',
+  //     code: HttpCode.NOT_FOUND,
+  //     message: 'User not found!',
+  //   });
+  // }
+
+  await Users.updateEmailVerificationToken(user._id, true, null);
+  return res.status(HttpCode.OK).json({
+    status: 'success',
+    code: HttpCode.OK,
+    message: 'Verification is successful',
+  });
+};
+
+const resendVerificationEmail = async (req, res, next) => {
+  const { email } = req.body;
+  const user = await Users.findByEmail(email);
+  const { name, verificationToken } = user;
+
+  if (user.isVerified === false) {
+    const emailService = new EmailService(
+      process.env,
+      new CreateSenderSendGrid(),
+    );
+
+    await emailService.sendVerificationEmail(email, name, verificationToken);
+
+    return res.status(HttpCode.OK).json({
+      status: 'success',
+      code: HttpCode.OK,
+      message: 'Verification email is sent',
+    });
+  }
+
+  if (user.isVerified === true) {
+    return res.status(HttpCode.BAD_REQUEST).json({
+      status: 'error',
+      code: HttpCode.BAD_REQUEST,
+      message: 'Invalid credentials',
+    });
+  }
+};
 
 module.exports = {
   signup,

@@ -28,10 +28,15 @@ const updateEmailVerificationToken = async (
   );
 };
 
+const findUserByVerificationToken = async emailVerificationToken => {
+  return await User.findOne({ emailVerificationToken });
+};
+
 module.exports = {
   findById,
   findByEmail,
   create,
   updateToken,
   updateEmailVerificationToken,
+  findUserByVerificationToken,
 };

@@ -4,36 +4,37 @@ class mailService {
   constructor(env, sender) {
     this.sender = sender;
     switch (env) {
-      case 'dev':
-        this.link = 'http://localhost:3000';
+      case 'development':
+        this.link = 'https://dc18-188-163-43-104.ngrok.io';
         break;
 
-      case 'short':
-        this.link = 'http://localhost:3000';
+      case 'production':
+        this.link = 'https://goit-react-hw-08-phonebook-av-solovei.netlify.app';
         break;
 
       default:
+        this.link = 'http://localhost:3000';
         break;
     }
   }
 
   createTemplateEmail(name, emailVerificationToken) {
-    // Configure mailgen by setting product info
     const mailGenerator = new Mailgen({
       theme: 'default',
       product: {
         name: 'iTeamChic command',
         link: this.link,
-        logo: logo,
         // logo: 'https://mailgen.js/img/logo.png'
       },
     });
 
     const email = {
       body: {
-        intro: `Hey, ${name}! You're almost ready to start enjoying Wallet application.`,
+        name,
+        intro: `You're almost ready to start enjoying Wallet application.`,
         action: {
-          instructions: `To get started with Wallet, simply click the big button below. We just need to verify your email address.`,
+          instructions:
+            'To get started with Wallet, simply click the big button below. We just need to verify your email address.',
           button: {
             color: '#24cca7',
             text: 'Confirm your account',
