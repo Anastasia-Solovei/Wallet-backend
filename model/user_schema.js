@@ -1,10 +1,10 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, SchemaTypes } = require('mongoose');
 // Add bcrypt package
 const bcrypt = require('bcryptjs');
 const SALT_FACTOR = 6;
 const crypto = require('crypto');
 
-// Add name field
+// Add name , balance field
 const userSchema = new Schema(
   {
     name: {
@@ -24,6 +24,10 @@ const userSchema = new Schema(
         const re = /\S+@\S+.\S+/;
         return re.test(String(value).toLowerCase());
       },
+    },
+    balance: {
+      type: SchemaTypes.Number,
+      default: 0,
     },
     token: {
       type: String,
