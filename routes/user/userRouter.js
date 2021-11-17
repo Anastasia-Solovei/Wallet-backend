@@ -1,6 +1,10 @@
 const express = require('express');
 const userRouter = express.Router();
 const {
+  validateUserRegistration,
+  validateUserLogin,
+} = require('./validationUsers');
+const {
   signup,
   login,
   logout,
@@ -15,9 +19,9 @@ userRouter.get('/', guard, function (req, res) {
 });
 
 // add registration route
-userRouter.post('/signup', signup);
+userRouter.post('/signup', validateUserRegistration, signup);
 // add login route
-userRouter.post('/login', login);
+userRouter.post('/login', validateUserLogin, login);
 // add logout route
 userRouter.post('/logout', guard, logout);
 // add route of current user
