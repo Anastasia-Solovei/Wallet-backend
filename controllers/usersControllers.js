@@ -4,6 +4,8 @@ const { HttpCode } = require('../config/constants');
 require('dotenv').config();
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 const { CustomError } = require('../helpers/custom_error');
+const EmailService = require('../services/email/service');
+const { CreateSenderSendGrid } = require('../services/email/sender');
 
 // add registration controller
 const signup = async (req, res, next) => {
@@ -19,6 +21,18 @@ const signup = async (req, res, next) => {
 
   try {
     const newUser = await Users.create({ name, email, password });
+    // sending email to verify user
+    const emailService = new EmailService(
+      process.env,
+      new CreateSenderSendGrid(),
+    );
+
+    const isVerifiedEmail = await emailService.sendVerificationEmail(
+      newUser.email,
+      newUser.name,
+      newUser.emailVerificationToken,
+    );
+
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
@@ -26,6 +40,7 @@ const signup = async (req, res, next) => {
         id: newUser.id,
         name: newUser.name,
         email: newUser.email,
+        verificationEmail: isVerifiedEmail,
       },
     });
   } catch (e) {
@@ -38,7 +53,7 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await Users.findByEmail(email);
   const isValidPassword = await user.isValidPassword(password);
-  if (!user || !isValidPassword) {
+  if (!user || !isValidPassword || !user?.isVerified) {
     return res.status(HttpCode.UNAUTHORIZED).json({
       status: 'error',
       code: HttpCode.UNAUTHORIZED,
@@ -92,9 +107,15 @@ const current = async (req, res, next) => {
   });
 };
 
+const verifyUser = async (req, res, next) => {};
+
+const resendVerificationEmail = (req, res, next) => {};
+
 module.exports = {
   signup,
   login,
   logout,
   current,
+  verifyUser,
+  resendVerificationEmail,
 };
