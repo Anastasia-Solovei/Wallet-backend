@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose');
 // Add bcrypt package
 const bcrypt = require('bcryptjs');
 const SALT_FACTOR = 6;
+const crypto = require('crypto');
 
 // Add name field
 const userSchema = new Schema(
@@ -27,6 +28,15 @@ const userSchema = new Schema(
     token: {
       type: String,
       default: null,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    emailVerificationToken: {
+      type: String,
+      required: true,
+      default: crypto.randomUUID(),
     },
   },
   {

@@ -5,6 +5,8 @@ const {
   login,
   logout,
   current,
+  verifyUser,
+  resendVerificationEmail,
 } = require('../../controllers/usersControllers');
 // Add guard for user
 const guard = require('../../helpers/guard');
@@ -22,5 +24,9 @@ userRouter.post('/login', login);
 userRouter.post('/logout', guard, logout);
 // add route of current user
 userRouter.get('/current', guard, current);
+// add route of verification email
+userRouter.get('/verify/:emailVerificationToken', verifyUser);
+// add route of resending verification email
+userRouter.post('/verify', resendVerificationEmail);
 
 module.exports = userRouter;
