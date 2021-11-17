@@ -1,4 +1,5 @@
 const { Schema, model, SchemaTypes } = require('mongoose');
+const { Category } = require('../config/constants');
 
 const transactionSchema = new Schema(
   {
@@ -28,6 +29,12 @@ const transactionSchema = new Schema(
       ref: 'user',
       required: true,
     },
+    category: {
+      type: SchemaTypes.String,
+      enum: [...Category.expenses, ...Category.incomes],
+      default: Category.incomes[0],
+      required: true,
+    }
   },
   {
     versionKey: false,
