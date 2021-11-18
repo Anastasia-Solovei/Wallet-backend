@@ -18,13 +18,13 @@ const transactionSchema = new Schema(
       default: new Date().toLocaleDateString(),
     },
     day: {
-      type: String,
+      type: SchemaTypes.Number,
     },
     month: {
-      type: SchemaTypes.String,
+      type: SchemaTypes.Number,
     },
     year: {
-      type: String,
+      type: SchemaTypes.Number,
     },
     comment: {
       type: SchemaTypes.String,
@@ -37,9 +37,6 @@ const transactionSchema = new Schema(
       type: SchemaTypes.ObjectId,
       ref: 'user',
       required: true,
-    },
-    userId: {
-      type: SchemaTypes.String,
     },
     category: {
       type: SchemaTypes.String,

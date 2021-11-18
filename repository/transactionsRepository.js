@@ -6,8 +6,7 @@ const getAllTransactions = async userId => {
   return await Transaction.find({ owner: userId });
 };
 
-const getStatistics = async (month, year, userId) => {
-  console.log(month, year, userId);
+const getStatistics = async (userId, month, year) => {
   return await Transaction.find({ owner: userId, month: month, year: year });
 
   // const arrayCategories = getAllCategories();
