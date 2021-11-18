@@ -1,0 +1,1276 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Wallet",
+    "description": "iTeamChic",
+    "version": "1.0.0"
+  },
+  "consumens": ["application/json"],
+  "produces": ["application/json"],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Users endpoints"
+    },
+    {
+      "name": "Transactions",
+      "description": "Transactions' endpoints"
+    },
+
+    {
+      "name": "Categories",
+      "description": "Categories' endpoints"
+    }
+  ],
+  "servers": [{ "url": "http://localhost:3000" }, { "url": "" }],
+  "paths": {
+    "/users/signup": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Users signup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password", "name"],
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "example": "qwerty123",
+                    "description": "Password"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Bob",
+                    "description": "Name"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "name@email.com",
+                    "description": "Email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "responses status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "responses code",
+                      "example": "201"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "responses data",
+                      "example": {
+                        "id": "1q2w3e4r5t6y7",
+                        "email": "example@email.com"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "code",
+                      "example": "409"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "conflict",
+                      "example": "Email is in use"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Iternal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/users/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Users login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "example": "qwerty123",
+                    "description": "Password"
+                  },
+
+                  "email": {
+                    "type": "string",
+                    "example": "name@email.com",
+                    "description": "Email"
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "responses status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "responses code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "responses data",
+                      "example": {
+                        "token": "1q2-w3e-4r5-t6y"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invaid credincials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "responses status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "responses code",
+                      "example": "401"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "responses message",
+                      "example": "Invalid creadentials"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Iternal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/users/logout": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Users logout",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "204": { "description": "Success" },
+
+          "500": {
+            "description": "Iternal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/users/current": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get current user",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "responses status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "responses code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "responses data",
+                      "example": {
+                        "user": {
+                          "name": "Bob",
+                          "email": "name@mail.com"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Invaid credincials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "responses status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "responses code",
+                      "example": "401"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "responses message",
+                      "example": "Invalid creadentials"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Iternal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/users/verify/:verificationToken": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Verification email",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "responses status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "responses code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "responses data",
+                      "example": {
+                        "message": "Verification is successful"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Iternal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/users/verify": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Resend verification email",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "name@email.com",
+                    "description": "Email"
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "responses status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "responses code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "responses data",
+                      "example": { "message": "Check your email" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Iternal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error 500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/transactions/all": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get all transactions",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "success",
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "responses status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "responses code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "responses data",
+                      "example": {
+                        "totalBalance": 1000
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "description": "responses status",
+                "example": "error"
+              },
+              "code": {
+                "type": "string",
+                "description": "responses code",
+                "example": "403"
+              },
+              "message": {
+                "type": "string",
+                "description": "responses message",
+                "example": "Access denied"
+              }
+            }
+          },
+          "500": {
+            "description": "Iternal ServerError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/transactions/new": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Create new transaction",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["date", "category", "amount", "type"],
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "example": "Sat Nov 13 2021 12:51:02",
+                    "description": "date"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "present",
+                    "description": "category"
+                  },
+                  "comments": {
+                    "type": "string",
+                    "example": "grandma's present",
+                    "description": "comments"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "example": 10000,
+                    "description": "amount"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "income",
+                    "description": "type"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "responses status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "responses code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "responses data",
+                      "example": {
+                        "newTransaction": {
+                          "date": "Sat Nov 13 2021 12:51:02",
+                          "type": "income",
+                          "category": "gift",
+                          "comments": "love my Granny",
+                          "amount": 10000
+                        },
+                        "totalBalance": 11000
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Iternal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/transactions/{transactionId}": {
+      "patch": {
+        "tags": ["Transactions"],
+        "summary": "Change transaction",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "transactionId",
+            "required": "true",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["date", "category", "amount", "type"],
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "example": "Sat Nov 13 2021 12:51:02",
+                    "description": "date"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "salary",
+                    "description": "category"
+                  },
+                  "comments": {
+                    "type": "string",
+                    "example": "My salary",
+                    "description": "comments"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "example": 5000,
+                    "description": "amount"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "income",
+                    "description": "type"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "responses status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "responses code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "responses data",
+                      "example": {
+                        "transactions": {
+                          "comments": "salary",
+                          "date": "Sat Nov 13 2021 12:51:02",
+                          "type": "income",
+                          "category": "My salary",
+                          "amount": 5000,
+                          "id": "1q2-w3e-4r5-t6y"
+                        },
+                        "totalBalance": 5000
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Iternal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Transactions"],
+        "summary": "Delete transaction",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "transactionId",
+            "required": "true",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["date", "amount", "type"],
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "example": "Sat Nov 13 2021 12:51:02",
+                    "description": "date"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "example": 10000,
+                    "description": "amount"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "income",
+                    "description": "type"
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "responses status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "responses code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "responses data",
+                      "example": {
+                        "transactions": {
+                          "comments": "salary",
+                          "date": "Sat Nov 13 2021 12:51:02",
+                          "type": "income",
+                          "category": "My salary",
+                          "amount": 5000,
+                          "id": "1q2-w3e-4r5-t6y"
+                        },
+                        "totalBalance": 5000
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Iternal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/transactions/statistics/{month}/{year}": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get statistic",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "month",
+            "in": "path",
+            "description": "month request",
+            "required": "true",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "description": "year request",
+            "required": "true",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "responses status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "responses code",
+                      "example": "200"
+                    },
+                    "statistic": {
+                      "type": "object",
+                      "description": "responses data",
+                      "example": {
+                        "monthStatistic": [
+                          {
+                            "name": "car",
+                            "count": 2000
+                          },
+                          {
+                            "name": "food",
+                            "count": 5000
+                          }
+                        ],
+                        "income": [
+                          {
+                            "name": "gifts",
+                            "count": 2000
+                          },
+                          {
+                            "name": "salary",
+                            "count": 5000
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Iternal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/categories/all": {
+      "get": {
+        "tags": ["Categories"],
+        "summary": "Get all categories",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "responses status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "responses code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "responses data",
+                      "example": {
+                        "categories": []
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Iternal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/categories/new": {
+      "post": {
+        "tags": ["Categories"],
+        "summary": "Create category",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["category"],
+                "properties": {
+                  "category": {
+                    "type": "string",
+                    "example": "salary",
+                    "description": "category"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "responses status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "responses code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "responses data",
+                      "example": {
+                        "newCategory": {
+                          "_id": "1q2w3e4r5t6y7",
+                          "value": "Kids",
+                          "color": "#FFC0CB"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "code",
+                      "example": "409"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "conflict",
+                      "example": "Category already exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Iternal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/categories/{categoryId}": {
+      "delete": {
+        "tags": ["Categories"],
+        "summary": "Delete category",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "categoryId",
+            "required": "true",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["category"],
+                "properties": {
+                  "category": {
+                    "type": "string",
+                    "example": "Kids"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "responses status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "responses code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "responses data",
+                      "example": {
+                        "isDeleted": true,
+                        "deletedCategory": {
+                          "value": "Kids",
+                          "color": "#FFC0CB",
+                          "id": "1q2w3e4r5t6y7"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Iternal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "patch": {
+        "tags": ["Categories"],
+        "summary": "Change category",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["category"],
+                "properties": {
+                  "category": {
+                    "type": "string",
+                    "example": {
+                      "oldCategoryName": "Kids",
+                      "newCategoryName": "Wine"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "responses status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "responses code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "responses data"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "code",
+                      "example": "404"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Not Found",
+                      "example": "Category doesn`t exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Iternal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error 500"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "Error500": {
+        "description": "Iternal Server Error",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "responses status",
+            "example": "fail"
+          },
+          "code": {
+            "type": "string",
+            "description": "responses code",
+            "example": "500"
+          },
+          "message": {
+            "type": "string",
+            "description": "responses message",
+            "example": "Something is wrong. Try again later"
+          },
+          "data": {
+            "type": "string",
+            "description": "responses data",
+            "example": "Internal Server Found"
+          }
+        }
+      }
+    },
+    
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "schemes": ["http", "https"]
+}
