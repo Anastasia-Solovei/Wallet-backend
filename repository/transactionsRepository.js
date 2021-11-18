@@ -1,25 +1,23 @@
 const Transaction = require('../model/transaction_schema');
-
+const { expensesСategories } = require('../config/constants');
 const getAllCategories = require('./categoriesRepository');
-
-//not work
-
-// const getStatistics = async (month, year, userId) => {
-//   const expensesByCategories = await getAllCategories.map(category => {
-//     Transaction.find({ category, month, year, userId });
-//   });
-//   return expensesByCategories;
-// };
-
-const getStatistics = async (month, year, userId) => {
-  const expensesByCategories = await getAllCategories.map(category => {
-    Transaction.find({ category, month, year, userId });
-  });
-  return expensesByCategories;
-};
 
 const getAllTransactions = async userId => {
   return await Transaction.find({ owner: userId });
+};
+
+const getStatistics = async (month, year, userId) => {
+  console.log(month, year, userId);
+  return await Transaction.find({ owner: userId, month: month, year: year });
+
+  // const arrayCategories = getAllCategories();
+  // console.log(expensesСategories);
+  // const expensesByCategories = await expensesСategories.map(category => {
+  //   console.log(category);
+  //   Transaction.find({ category, month, year, userId });
+  // });
+  // console.log(expensesByCategories);
+  // return expensesByCategories;
 };
 
 const addTransaction = async body => {

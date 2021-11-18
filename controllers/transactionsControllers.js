@@ -36,17 +36,16 @@ const addTransaction = async (req, res, next) => {
 const getStatistics = async (req, res, next) => {
   try {
     const { month, year } = req.query;
-    const userId = req.user._id;
 
-    const statistics = await Transactions.getStatistics({
-      ...req.body,
-      owner: userId,
-    });
+    const userId = req.user._id;
+    console.log(month, year);
+
+    const statistics = await Transactions.getStatistics(userId, month, year);
 
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
-      statistics: { monthStatistic },
+      statistics: { statistics },
     });
   } catch (error) {
     next(error);
