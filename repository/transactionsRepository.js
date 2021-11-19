@@ -8,15 +8,6 @@ const getAllTransactions = async userId => {
 
 const getStatistics = async (userId, month, year) => {
   return await Transaction.find({ owner: userId, month: month, year: year });
-
-  // const arrayCategories = getAllCategories();
-  // console.log(expensesСategories);
-  // const expensesByCategories = await expensesСategories.map(category => {
-  //   console.log(category);
-  //   Transaction.find({ category, month, year, userId });
-  // });
-  // console.log(expensesByCategories);
-  // return expensesByCategories;
 };
 
 const addTransaction = async body => {
