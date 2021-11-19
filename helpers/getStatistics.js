@@ -17,15 +17,11 @@ const getStatisticsByCategories = arrayTransactions => {
   };
   expensesСategories.forEach(categoryExp => {
     arrayTransactions.forEach(item => {
-      console.log(categoryExp);
       if (item.category === categoryExp) {
-        console.log('yes');
         sumCategories[categoryExp] += item.amount;
-        console.log(item.amount);
       }
     });
   });
-  console.log(sumCategories);
   return sumCategories;
 };
 

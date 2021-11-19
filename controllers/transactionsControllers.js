@@ -37,10 +37,7 @@ const addTransaction = async (req, res, next) => {
 const getStatisticsByMonth = async (req, res, next) => {
   try {
     const { month, year } = req.query;
-
     const userId = req.user._id;
-    console.log(month, year);
-
     const statistics = await Transactions.getStatistics(userId, month, year);
     const stats = getStatisticsByCategories(statistics);
     return res.status(HttpCode.CREATED).json({
