@@ -30,18 +30,18 @@ const Category = {
 };
 
 const expensesСategories = [
-  'Main',
-  'Food',
-  'Car',
-  'Me',
-  'Children',
-  'House',
-  'Education',
-  'Leisure',
-  'Other',
+  'main',
+  'food',
+  'car',
+  'me',
+  'children',
+  'house',
+  'education',
+  'leisure',
+  'other',
 ];
 
-let sumCategories = {
+let initialSumCategories = {
   main: 0,
   food: 0,
   car: 0,
@@ -53,4 +53,9 @@ let sumCategories = {
   other: 0,
 };
 
-module.exports = { HttpCode, expensesСategories, Category, sumCategories };
+module.exports = {
+  HttpCode,
+  expensesСategories,
+  Category,
+  initialSumCategories,
+};

@@ -1,6 +1,7 @@
 const Transactions = require('../repository/transactionsRepository');
 const { HttpCode } = require('../config/constants');
 const { CustomError } = require('../helpers/custom_error');
+const { getStatisticsByCategories } = require('../helpers/getStatistics.js');
 
 const getAllTransactions = async (req, res, next) => {
   try {
@@ -33,7 +34,7 @@ const addTransaction = async (req, res, next) => {
   }
 };
 
-const getStatistics = async (req, res, next) => {
+const getStatisticsByMonth = async (req, res, next) => {
   try {
     const { month, year } = req.query;
 
@@ -41,11 +42,11 @@ const getStatistics = async (req, res, next) => {
     console.log(month, year);
 
     const statistics = await Transactions.getStatistics(userId, month, year);
-
+    const stats = getStatisticsByCategories(statistics);
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
-      statistics: { statistics },
+      statistics: stats,
     });
   } catch (error) {
     next(error);
@@ -87,7 +88,7 @@ module.exports = {
   getAllTransactions,
   addTransaction,
 
-  getStatistics,
+  getStatisticsByMonth,
 
   editTransactionById,
   deleteTransactionById,
