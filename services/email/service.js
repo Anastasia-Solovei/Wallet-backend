@@ -5,7 +5,7 @@ class mailService {
     this.sender = sender;
     switch (env) {
       case 'development':
-        this.link = 'https://5743-188-163-43-104.ngrok.io';
+        this.link = 'https://d277-188-163-43-104.ngrok.io';
         break;
 
       case 'production':
@@ -58,7 +58,6 @@ class mailService {
     };
     try {
       const result = await this.sender.send(msg);
-      console.log(result);
     } catch (err) {
       console.log(err.message);
       return false;
