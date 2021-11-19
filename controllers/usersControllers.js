@@ -22,16 +22,16 @@ const signup = async (req, res, next) => {
   try {
     const newUser = await Users.create({ name, email, password });
     // sending email to verify user
-    const emailService = new EmailService(
-      process.env,
-      new CreateSenderSendGrid(),
-    );
+    // const emailService = new EmailService(
+    //   process.env,
+    //   new CreateSenderSendGrid(),
+    // );
 
-    await emailService.sendVerificationEmail(
-      newUser.email,
-      newUser.name,
-      newUser.emailVerificationToken,
-    );
+    // await emailService.sendVerificationEmail(
+    //   newUser.email,
+    //   newUser.name,
+    //   newUser.emailVerificationToken,
+    // );
 
     return res.status(HttpCode.CREATED).json({
       status: 'success',
@@ -53,7 +53,8 @@ const login = async (req, res, next) => {
   const user = await Users.findByEmail(email);
   const isValidPassword = await user?.isValidPassword(password);
 
-  if (!user || !user?.isVerified || !isValidPassword) {
+  if (!user || !isValidPassword) {
+    // || !user?.isVerified)
     return res.status(HttpCode.UNAUTHORIZED).json({
       status: 'error',
       code: HttpCode.UNAUTHORIZED,
