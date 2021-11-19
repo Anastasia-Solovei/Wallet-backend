@@ -1,7 +1,6 @@
 const Transactions = require('../repository/transactionsRepository');
 const { HttpCode } = require('../config/constants');
 const { CustomError } = require('../helpers/custom_error');
-const { getStatisticsByCategories } = require('../helpers/getStatistics.js');
 
 const getAllTransactions = async (req, res, next) => {
   try {
@@ -39,7 +38,7 @@ const getStatisticsByMonth = async (req, res, next) => {
     const { month, year } = req.query;
     const userId = req.user._id;
     const statistics = await Transactions.getStatistics(userId, month, year);
-    const stats = getStatisticsByCategories(statistics);
+    const stats = Transactions.getStatisticsByCategories(statistics);
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,

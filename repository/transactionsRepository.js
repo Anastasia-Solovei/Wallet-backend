@@ -10,6 +10,31 @@ const getStatistics = async (userId, month, year) => {
   return await Transaction.find({ owner: userId, month: month, year: year });
 };
 
+const getStatisticsByCategories = arrayTransactions => {
+  const sumCategories = {
+    main: 0,
+    food: 0,
+    car: 0,
+    me: 0,
+    children: 0,
+    house: 0,
+    education: 0,
+    leisure: 0,
+    other: 0,
+    incomes: 0,
+  };
+  expensesСategories.forEach(categoryExp => {
+    arrayTransactions.forEach(item => {
+      if (item.type === 'incomes') {
+        sumCategories.incomes += item.amount;
+      } else if (item.category === categoryExp) {
+        sumCategories[categoryExp] += item.amount;
+      }
+    });
+  });
+  return sumCategories;
+};
+
 const addTransaction = async body => {
   return await Transaction.create(body);
 };
@@ -35,4 +60,5 @@ module.exports = {
   addTransaction,
   editTransaction,
   deleteTransaction,
+  getStatisticsByCategories,
 };
