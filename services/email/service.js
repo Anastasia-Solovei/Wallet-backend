@@ -5,7 +5,7 @@ class mailService {
     this.sender = sender;
     switch (env) {
       case 'development':
-        this.link = 'https://goit-react-hw-08-phonebook-av-solovei.netlify.app';
+        this.link = 'http://localhost:3000';
         break;
 
       case 'production':

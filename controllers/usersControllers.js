@@ -22,31 +22,27 @@ const signup = async (req, res, next) => {
   try {
     const newUser = await Users.create({ name, email, password });
     // sending email to verify user
-    // const emailService = new EmailService(
-    //   process.env,
-    //   new CreateSenderSendGrid(),
-    // );
+    const emailService = new EmailService(
+      process.env,
+      new CreateSenderSendGrid(),
+    );
 
-    // await emailService.sendVerificationEmail(
-    //   newUser.email,
-    //   newUser.name,
-    //   newUser.emailVerificationToken,
-    // );
-    const id = newUser._id;
-    const payload = { id };
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
-    await Users.updateToken(id, token);
+    await emailService.sendVerificationEmail(
+      newUser.email,
+      newUser.name,
+      newUser.emailVerificationToken,
+    );
+    console.log(newUser);
 
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
       data: {
-        user: {
-          id: newUser.id,
-          name: newUser.name,
-          email: newUser.email,
-        },
-        token,
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        emailVerificationToken: newUser.emailVerificationToken,
+        isVerified: newUser.isVerified,
       },
     });
   } catch (e) {
@@ -60,8 +56,7 @@ const login = async (req, res, next) => {
   const user = await Users.findByEmail(email);
   const isValidPassword = await user?.isValidPassword(password);
 
-  if (!user || !isValidPassword) {
-    // || !user?.isVerified)
+  if (!user || !isValidPassword || !user?.isVerified) {
     return res.status(HttpCode.UNAUTHORIZED).json({
       status: 'error',
       code: HttpCode.UNAUTHORIZED,
@@ -73,11 +68,18 @@ const login = async (req, res, next) => {
   const payload = { id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
   await Users.updateToken(id, token);
+  console.log(user);
 
   return res.status(HttpCode.OK).json({
     status: 'success',
     code: HttpCode.OK,
     data: {
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        totalbalance: user.totalbalance,
+      },
       token,
     },
   });
