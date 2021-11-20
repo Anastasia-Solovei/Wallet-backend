@@ -17,6 +17,15 @@ const transactionSchema = new Schema(
       type: SchemaTypes.String,
       default: new Date().toLocaleDateString(),
     },
+    day: {
+      type: SchemaTypes.Number,
+    },
+    month: {
+      type: SchemaTypes.Number,
+    },
+    year: {
+      type: SchemaTypes.Number,
+    },
     comment: {
       type: SchemaTypes.String,
       default: '',
@@ -34,7 +43,7 @@ const transactionSchema = new Schema(
       enum: [...Category.expenses, ...Category.incomes],
       default: Category.incomes[0],
       required: true,
-    }
+    },
   },
   {
     versionKey: false,
@@ -50,6 +59,6 @@ const transactionSchema = new Schema(
   },
 );
 
-const Transaction = model("transaction", transactionSchema);
+const Transaction = model('transaction', transactionSchema);
 
 module.exports = Transaction;

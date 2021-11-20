@@ -1,3 +1,5 @@
+const { array } = require('joi');
+
 const HttpCode = {
   OK: 200,
   CREATED: 201,
@@ -12,9 +14,9 @@ const HttpCode = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
-
 const Category = {
   expenses: [
+    'main',
     'food',
     'car',
     'me',
@@ -24,20 +26,36 @@ const Category = {
     'leisure',
     'other',
   ],
-  incomes: ["incomes"],
-}
+  incomes: ['incomes'],
+};
 
 const expensesСategories = [
-  'Main',
-  'Food',
-  'Car',
-  'Me',
-  'Children',
-  'House',
-  'Education',
-  'Leisure',
-  'Other',
+  'main',
+  'food',
+  'car',
+  'me',
+  'children',
+  'house',
+  'education',
+  'leisure',
+  'other',
 ];
 
-module.exports = { HttpCode, expensesСategories, Category};
+let initialSumCategories = {
+  main: 0,
+  food: 0,
+  car: 0,
+  me: 0,
+  children: 0,
+  house: 0,
+  education: 0,
+  leisure: 0,
+  other: 0,
+};
 
+module.exports = {
+  HttpCode,
+  expensesСategories,
+  Category,
+  initialSumCategories,
+};

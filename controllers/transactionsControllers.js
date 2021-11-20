@@ -33,20 +33,16 @@ const addTransaction = async (req, res, next) => {
   }
 };
 
-const getStatistics = async (req, res, next) => {
+const getStatisticsByMonth = async (req, res, next) => {
   try {
     const { month, year } = req.query;
     const userId = req.user._id;
-
-    const statistics = await Transactions.getStatistics({
-      ...req.body,
-      owner: userId,
-    });
-
+    const statistics = await Transactions.getStatistics(userId, month, year);
+    const stats = Transactions.getStatisticsByCategories(statistics);
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
-      statistics: { monthStatistic },
+      statistics: stats,
     });
   } catch (error) {
     next(error);
@@ -88,7 +84,7 @@ module.exports = {
   getAllTransactions,
   addTransaction,
 
-  getStatistics,
+  getStatisticsByMonth,
 
   editTransactionById,
   deleteTransactionById,
