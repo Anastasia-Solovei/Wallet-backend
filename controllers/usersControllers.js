@@ -41,9 +41,9 @@ const signup = async (req, res, next) => {
         id: newUser.id,
         name: newUser.name,
         email: newUser.email,
-        emailVerificationToken: newUser.emailVerificationToken,
         isVerified: newUser.isVerified,
       },
+      emailVerificationToken: newUser.emailVerificationToken,
     });
   } catch (e) {
     next(e);
