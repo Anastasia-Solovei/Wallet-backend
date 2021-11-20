@@ -38,12 +38,14 @@ const signup = async (req, res, next) => {
       status: 'success',
       code: HttpCode.CREATED,
       data: {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-        isVerified: newUser.isVerified,
+        user: {
+          id: newUser.id,
+          name: newUser.name,
+          email: newUser.email,
+          isVerified: newUser.isVerified,
+        },
+        emailVerificationToken: newUser.emailVerificationToken,
       },
-      emailVerificationToken: newUser.emailVerificationToken,
     });
   } catch (e) {
     next(e);
