@@ -37,15 +37,13 @@ const signup = async (req, res, next) => {
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
-      data: {
-        user: {
-          id: newUser.id,
-          name: newUser.name,
-          email: newUser.email,
-          isVerified: newUser.isVerified,
-        },
-        emailVerificationToken: newUser.emailVerificationToken,
+      user: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        isVerified: newUser.isVerified,
       },
+      emailVerificationToken: newUser.emailVerificationToken,
     });
   } catch (e) {
     next(e);
