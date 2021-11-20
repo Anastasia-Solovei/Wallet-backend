@@ -5,7 +5,7 @@ class mailService {
     this.sender = sender;
     switch (env) {
       case 'development':
-        this.link = 'http://localhost:3000';
+        this.link = 'https://project-wallet.herokuapp.com';
         break;
 
       case 'production':
