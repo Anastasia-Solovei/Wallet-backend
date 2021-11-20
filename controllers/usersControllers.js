@@ -32,6 +32,7 @@ const signup = async (req, res, next) => {
       newUser.name,
       newUser.emailVerificationToken,
     );
+
     console.log(newUser);
 
     return res.status(HttpCode.CREATED).json({
@@ -120,21 +121,26 @@ const current = async (req, res, next) => {
 const verifyUser = async (req, res, next) => {
   const { emailVerificationToken } = req.params;
   const user = await Users.findUserByVerificationToken(emailVerificationToken);
+  try {
+    if (!user) {
+      return res.status(HttpCode.NOT_FOUND).json({
+        status: 'error',
+        code: HttpCode.NOT_FOUND,
+        message: 'User not found!',
+      });
+    }
 
-  if (!user) {
-    return res.status(HttpCode.NOT_FOUND).json({
-      status: 'error',
-      code: HttpCode.NOT_FOUND,
-      message: 'User not found!',
+    await Users.updateEmailVerificationToken(user._id, true, null);
+    // res.redirect('http://localhost:3000/login');
+    return res.status(HttpCode.OK).json({
+      status: 'success',
+      code: HttpCode.OK,
+
+      message: 'Verification is successful',
     });
+  } catch (err) {
+    console.log(err);
   }
-
-  await Users.updateEmailVerificationToken(user._id, true, null);
-  return res.status(HttpCode.OK).json({
-    status: 'success',
-    code: HttpCode.OK,
-    message: 'Verification is successful',
-  });
 };
 
 const resendVerificationEmail = async (req, res, next) => {
