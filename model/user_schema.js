@@ -25,7 +25,7 @@ const userSchema = new Schema(
         return re.test(String(value).toLowerCase());
       },
     },
-    balance: {
+    totalbalance: {
       type: SchemaTypes.Number,
       default: 0,
     },
