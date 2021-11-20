@@ -24,7 +24,7 @@ userRouter.get('/', guard, function (req, res) {
 // add registration route
 userRouter.post('/signup', validateUserRegistration, signup);
 // add login route
-userRouter.post('/login', validateUserLogin, login);
+userRouter.post('/login', guard, validateUserLogin, login);
 // add logout route
 userRouter.post('/logout', guard, logout);
 // add route of current user

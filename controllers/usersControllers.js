@@ -32,14 +32,21 @@ const signup = async (req, res, next) => {
     //   newUser.name,
     //   newUser.emailVerificationToken,
     // );
+    const id = newUser._id;
+    const payload = { id };
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
+    await Users.updateToken(id, token);
 
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
       data: {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
+        user: {
+          id: newUser.id,
+          name: newUser.name,
+          email: newUser.email,
+        },
+        token,
       },
     });
   } catch (e) {
