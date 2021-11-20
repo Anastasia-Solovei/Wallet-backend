@@ -5,7 +5,7 @@ class mailService {
     this.sender = sender;
     switch (env) {
       case 'development':
-        this.link = 'https://project-wallet.herokuapp.com';
+        this.link = 'http://localhost:3000';
         break;
 
       case 'production':
@@ -38,7 +38,7 @@ class mailService {
           button: {
             color: '#24cca7',
             text: 'Confirm your account',
-            link: `${this.link}/users/verify/${emailVerificationToken}`,
+            link: `${this.link}/users/login`,
           },
         },
         outro:
