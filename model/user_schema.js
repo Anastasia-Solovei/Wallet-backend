@@ -33,15 +33,15 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
-    emailVerificationToken: {
-      type: String,
-      required: [true, 'Verification token is required'],
-      default: crypto.randomUUID(),
-    },
+    // isVerified: {
+    //   type: Boolean,
+    //   default: false,
+    // },
+    // emailVerificationToken: {
+    //   type: String,
+    //   required: [true, 'Verification token is required'],
+    //   default: crypto.randomUUID(),
+    // },
   },
   {
     versionKey: false,

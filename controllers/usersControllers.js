@@ -57,7 +57,8 @@ const login = async (req, res, next) => {
   const user = await Users.findByEmail(email);
   const isValidPassword = await user?.isValidPassword(password);
 
-  if (!user || !isValidPassword || !user?.isVerified) {
+  if (!user || !isValidPassword) {
+    //|| !user?.isVerified)
     return res.status(HttpCode.UNAUTHORIZED).json({
       status: 'error',
       code: HttpCode.UNAUTHORIZED,
