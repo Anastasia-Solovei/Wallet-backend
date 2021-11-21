@@ -75,15 +75,13 @@ const login = async (req, res, next) => {
   return res.status(HttpCode.OK).json({
     status: 'success',
     code: HttpCode.OK,
-    data: {
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        totalbalance: user.totalbalance,
-      },
-      token,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      totalbalance: user.totalbalance,
     },
+    token,
   });
 };
 
@@ -110,11 +108,9 @@ const current = async (req, res, next) => {
   return res.status(HttpCode.OK).json({
     status: 'success',
     code: HttpCode.OK,
-    data: {
-      user: {
-        name: user.name,
-        email: user.email,
-      },
+    user: {
+      name: user.name,
+      email: user.email,
     },
   });
 };
