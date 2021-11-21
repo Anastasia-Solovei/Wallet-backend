@@ -5,15 +5,15 @@ class mailService {
     this.sender = sender;
     switch (env) {
       case 'development':
-        this.link = 'http://localhost:3000';
+        this.link = 'https://project-wallet.netlify.app';
         break;
 
       case 'production':
-        this.link = 'https://goit-react-hw-08-phonebook-av-solovei.netlify.app';
+        this.link = 'https://project-wallet.netlify.app';
         break;
 
       default:
-        this.link = 'http://localhost:3000';
+        // this.link = 'http://localhost:3000';
         break;
     }
   }
