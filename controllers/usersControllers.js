@@ -22,16 +22,16 @@ const signup = async (req, res, next) => {
   try {
     const newUser = await Users.create({ name, email, password });
     // sending email to verify user
-    const emailService = new EmailService(
-      process.env,
-      new CreateSenderSendGrid(),
-    );
+    // const emailService = new EmailService(
+    //   process.env,
+    //   new CreateSenderSendGrid(),
+    // );
 
-    await emailService.sendVerificationEmail(
-      newUser.email,
-      newUser.name,
-      newUser.emailVerificationToken,
-    );
+    // await emailService.sendVerificationEmail(
+    //   newUser.email,
+    //   newUser.name,
+    //   newUser.emailVerificationToken,
+    // );
 
     console.log(newUser);
 
@@ -118,72 +118,72 @@ const current = async (req, res, next) => {
   });
 };
 
-const verifyUser = async (req, res, next) => {
-  const { emailVerificationToken } = req.params;
-  const user = await Users.findUserByVerificationToken(emailVerificationToken);
-  try {
-    if (!user) {
-      return res.status(HttpCode.NOT_FOUND).json({
-        status: 'error',
-        code: HttpCode.NOT_FOUND,
-        message: 'User not found!',
-      });
-    }
+// const verifyUser = async (req, res, next) => {
+//   const { emailVerificationToken } = req.params;
+//   const user = await Users.findUserByVerificationToken(emailVerificationToken);
+//   try {
+//     if (!user) {
+//       return res.status(HttpCode.NOT_FOUND).json({
+//         status: 'error',
+//         code: HttpCode.NOT_FOUND,
+//         message: 'User not found!',
+//       });
+//     }
 
-    await Users.updateEmailVerificationToken(user._id, true, null);
-    // res.redirect('http://localhost:3000/login');
-    return res.status(HttpCode.OK).json({
-      status: 'success',
-      code: HttpCode.OK,
-      message: 'Verification is successful',
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
+//     await Users.updateEmailVerificationToken(user._id, true, null);
+//     // res.redirect('http://localhost:3000/login');
+//     return res.status(HttpCode.OK).json({
+//       status: 'success',
+//       code: HttpCode.OK,
+//       message: 'Verification is successful',
+//     });
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
 
-const resendVerificationEmail = async (req, res, next) => {
-  try {
-    const { email } = req.body;
-    const user = await Users.findByEmail(email);
-    const { name, emailVerificationToken } = user;
+// const resendVerificationEmail = async (req, res, next) => {
+//   try {
+//     const { email } = req.body;
+//     const user = await Users.findByEmail(email);
+//     const { name, emailVerificationToken } = user;
 
-    if (user.isVerified === false) {
-      const emailService = new EmailService(
-        process.env,
-        new CreateSenderSendGrid(),
-      );
+//     if (user.isVerified === false) {
+//       const emailService = new EmailService(
+//         process.env,
+//         new CreateSenderSendGrid(),
+//       );
 
-      await emailService.sendVerificationEmail(
-        email,
-        name,
-        emailVerificationToken,
-      );
+//       await emailService.sendVerificationEmail(
+//         email,
+//         name,
+//         emailVerificationToken,
+//       );
 
-      return res.status(HttpCode.OK).json({
-        status: 'success',
-        code: HttpCode.OK,
-        message: 'Verification email is sent',
-      });
-    }
+//       return res.status(HttpCode.OK).json({
+//         status: 'success',
+//         code: HttpCode.OK,
+//         message: 'Verification email is sent',
+//       });
+//     }
 
-    if (user.isVerified === true) {
-      return res.status(HttpCode.BAD_REQUEST).json({
-        status: 'error',
-        code: HttpCode.BAD_REQUEST,
-        message: 'Invalid credentials',
-      });
-    }
-  } catch (err) {
-    next(err);
-  }
-};
+//     if (user.isVerified === true) {
+//       return res.status(HttpCode.BAD_REQUEST).json({
+//         status: 'error',
+//         code: HttpCode.BAD_REQUEST,
+//         message: 'Invalid credentials',
+//       });
+//     }
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 module.exports = {
   signup,
   login,
   logout,
   current,
-  verifyUser,
-  resendVerificationEmail,
+  //verifyUser,
+  //resendVerificationEmail,
 };
