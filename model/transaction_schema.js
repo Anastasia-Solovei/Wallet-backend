@@ -7,6 +7,7 @@ const transactionSchema = new Schema(
       type: SchemaTypes.String,
       enum: ['incomes', 'expenses'],
       default: 'incomes',
+      required: true,
     },
     amount: {
       type: SchemaTypes.Number,
@@ -40,9 +41,8 @@ const transactionSchema = new Schema(
     },
     category: {
       type: SchemaTypes.String,
-      enum: [...Category.expenses, ...Category.incomes],
-      default: Category.incomes[0],
-      required: true,
+      enum: [...Category.expenses],
+      default: 'income',
     },
   },
   {
