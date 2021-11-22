@@ -35,9 +35,63 @@ const getStatisticsByCategories = arrayTransactions => {
   return sumCategories;
 };
 
-const addTransaction = async body => {
-  return await Transaction.create(body);
+// const addTransaction = async (body) => {
+//   const { type } = body;
+//   const amount = +body.amount;
+//     const incomes = await Transaction.find({type: 'incomes'});
+//     const expenses = await Transaction.find({type: 'expenses'});
+
+//     if (type === 'incomes' && incomes.length > 0) {
+//       const { balance } = incomes[incomes.length - 1];
+//       body.balance = balance + amount;
+//       incomes[incomes.length - 1].balance = balance + amount;
+
+//       console.log({balance});
+//       console.log('body', body);
+//       console.log(body.balance);
+//     } else if (type === 'expenses' && expenses.length > 0) {
+//       const { balance } = expenses[expenses.length - 1];
+//       body.balance = balance + amount;
+//       expenses[expenses.length - 1].balance = balance + amount;
+//     } else {
+//       body.balance = amount;
+//     }
+
+//   return await Transaction.create(body);
+// };
+
+const addTransaction = async ({type, amount, owner, totalBalance}) => {
+
+    const typeTransaction = await Transaction.find({type: type, owner: owner});
+    // const expenses = await Transaction.find({type});
+
+    // console.log('typeTransaction', typeTransaction);
+    // console.log('typeTransactionLength', typeTransaction.length);
+
+    if (typeTransaction.type === 'incomes' && typeTransaction.length > 0) {
+      const { balance } = typeTransaction[typeTransaction.length - 1];
+      totalBalance = balance + amount;
+
+      console.log(totalBalance)
+
+
+    //   typeTransaction[typeTransaction.length - 1].balance = balance + amount;
+
+      // console.log({balance});
+      // console.log('body', body);
+      // console.log(body.balance);
+    } 
+    // else if (typeTransaction === 'expenses' && expenses.length > 0) {
+    //   const { balance } = expenses[expenses.length - 1];
+    //   body.balance = balance + amount;
+    //   expenses[expenses.length - 1].balance = balance + amount;
+    // } else {
+    //   body.balance = amount;
+    // }
+
+  // return await Transaction.create(body);
 };
+
 
 const editTransaction = async (transactionId, body, userId) => {
   return await Transaction.findOneAndUpdate(
@@ -46,6 +100,7 @@ const editTransaction = async (transactionId, body, userId) => {
     { new: true },
   );
 };
+
 
 const deleteTransaction = async (transactionId, userId) => {
   return await Transaction.findOneAndRemove({
