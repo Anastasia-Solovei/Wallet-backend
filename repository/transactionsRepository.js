@@ -35,61 +35,37 @@ const getStatisticsByCategories = arrayTransactions => {
   return sumCategories;
 };
 
-// const addTransaction = async (body) => {
-//   const { type } = body;
-//   const amount = +body.amount;
-//     const incomes = await Transaction.find({type: 'incomes'});
-//     const expenses = await Transaction.find({type: 'expenses'});
+let sum = 0;
+let minus = 0;
+const addTransaction = async (body) => {
 
-//     if (type === 'incomes' && incomes.length > 0) {
-//       const { balance } = incomes[incomes.length - 1];
-//       body.balance = balance + amount;
-//       incomes[incomes.length - 1].balance = balance + amount;
+  const { type } = body;
+ 
+  const amount = +body.amount;
+    const incomes = await Transaction.find({type: 'incomes', owner: body.owner});
+    const expenses = await Transaction.find({type: 'expenses', owner: body.owner});
 
-//       console.log({balance});
-//       console.log('body', body);
-//       console.log(body.balance);
-//     } else if (type === 'expenses' && expenses.length > 0) {
-//       const { balance } = expenses[expenses.length - 1];
-//       body.balance = balance + amount;
-//       expenses[expenses.length - 1].balance = balance + amount;
-//     } else {
-//       body.balance = amount;
-//     }
-
-//   return await Transaction.create(body);
-// };
-
-const addTransaction = async ({type, amount, owner, totalBalance}) => {
-
-    const typeTransaction = await Transaction.find({type: type, owner: owner});
-    // const expenses = await Transaction.find({type});
-
-    // console.log('typeTransaction', typeTransaction);
-    // console.log('typeTransactionLength', typeTransaction.length);
-
-    if (typeTransaction.type === 'incomes' && typeTransaction.length > 0) {
-      const { balance } = typeTransaction[typeTransaction.length - 1];
-      totalBalance = balance + amount;
-
-      console.log(totalBalance)
-
-
-    //   typeTransaction[typeTransaction.length - 1].balance = balance + amount;
-
-      // console.log({balance});
-      // console.log('body', body);
-      // console.log(body.balance);
+    if (type === 'incomes' && incomes.length > 0) {
+      const { balance } = incomes[incomes.length - 1];
+      body.balance = balance + amount;
+      incomes[incomes.length - 1].balance = balance + amount;
+      sum = incomes[incomes.length - 1].balance;
+      // console.log("sum", sum);
+    } else if (type === 'expenses' && expenses.length > 0) {
+      const { balance } = expenses[expenses.length - 1];
+      body.balance = balance + amount;
+      expenses[expenses.length - 1].balance = balance + amount;
+      minus = expenses[expenses.length - 1].balance 
+      // console.log("minus", minus)
     } 
-    // else if (typeTransaction === 'expenses' && expenses.length > 0) {
-    //   const { balance } = expenses[expenses.length - 1];
-    //   body.balance = balance + amount;
-    //   expenses[expenses.length - 1].balance = balance + amount;
-    // } else {
-    //   body.balance = amount;
-    // }
-
-  // return await Transaction.create(body);
+    else {
+      body.balance = amount;
+    }
+    console.log("sum1", sum);
+    console.log("minus1", minus)
+    body.balance = sum - minus;
+    console.log('result', body.balance)
+  return await Transaction.create(body);
 };
 
 

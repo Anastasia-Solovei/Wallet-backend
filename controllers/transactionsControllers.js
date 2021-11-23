@@ -18,17 +18,9 @@ const getAllTransactions = async (req, res, next) => {
 
 const addTransaction = async (req, res, next) => {
   try {
-    const { type } = req.body;
-    const amount = +req.body.amount;
-    const balance = +req.body.balance;
-    // console.log('type', type);
-    // console.log('amount', amount);
-
     const userId = req.user._id;
     const transaction = await Transactions.addTransaction({
-      type,
-      amount,
-      balance,
+      ...req.body,
       owner: userId,
     });
     return res.status(HttpCode.CREATED).json({
