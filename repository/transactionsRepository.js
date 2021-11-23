@@ -35,7 +35,43 @@ const getStatisticsByCategories = arrayTransactions => {
   return sumCategories;
 };
 
+let incomesSum = 0;
+let expensesSum = 0;
 const addTransaction = async body => {
+  const { type } = body;
+
+  const amount = +body.amount;
+  console.log('amount', amount);
+
+  const incomes = await Transaction.find({
+    type: 'incomes',
+    owner: body.owner,
+  });
+  const expenses = await Transaction.find({
+    type: 'expenses',
+    owner: body.owner,
+  });
+
+  if (type === 'incomes' && incomes.length > 0) {
+    const { incomesBalance } = incomes[incomes.length - 1];
+    body.incomesBalance = incomesBalance + amount;
+    incomes[incomes.length - 1].incomesBalance = incomesBalance + amount;
+    incomesSum = incomes[incomes.length - 1].incomesBalance;
+  } else if (type === 'expenses' && expenses.length > 0) {
+    const { expensesBalance } = expenses[expenses.length - 1];
+    body.expensesBalance = expensesBalance + amount;
+    expenses[expenses.length - 1].expensesBalance = expensesBalance + amount;
+    expensesSum = expenses[expenses.length - 1].expensesBalance;
+  } else if (type === 'incomes' && incomes.length === 0) {
+    body.incomesBalance = amount;
+    incomesSum = amount;
+  } else if (type === 'expenses' && expenses.length === 0) {
+    body.expensesBalance = amount;
+    expensesSum = amount;
+  }
+
+  body.balance = incomesSum - expensesSum;
+
   return await Transaction.create(body);
 };
 
