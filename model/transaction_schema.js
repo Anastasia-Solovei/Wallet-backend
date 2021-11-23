@@ -36,14 +36,14 @@ const transactionSchema = new Schema(
       type: SchemaTypes.Number,
       default: 0,
     },
-    // incomesBalance: {
-    //   type: SchemaTypes.Number,
-    //   default: 0,
-    // },
-    // expensesBalance: {
-    //   type: SchemaTypes.Number,
-    //   default: 0,
-    // },
+    incomesBalance: {
+      type: SchemaTypes.Number,
+      default: 0,
+    },
+    expensesBalance: {
+      type: SchemaTypes.Number,
+      default: 0,
+    },
     owner: {
       type: SchemaTypes.ObjectId,
       ref: 'user',

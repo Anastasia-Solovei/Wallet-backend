@@ -35,39 +35,45 @@ const getStatisticsByCategories = arrayTransactions => {
   return sumCategories;
 };
 
-let sum = 0;
-let minus = 0;
-const addTransaction = async (body) => {
-
+let incomesSum = 0;
+let expensesSum = 0;
+const addTransaction = async body => {
   const { type } = body;
- 
-  const amount = +body.amount;
-    const incomes = await Transaction.find({type: 'incomes', owner: body.owner});
-    const expenses = await Transaction.find({type: 'expenses', owner: body.owner});
 
-    if (type === 'incomes' && incomes.length > 0) {
-      const { balance } = incomes[incomes.length - 1];
-      body.balance = balance + amount;
-      incomes[incomes.length - 1].balance = balance + amount;
-      sum = incomes[incomes.length - 1].balance;
-      // console.log("sum", sum);
-    } else if (type === 'expenses' && expenses.length > 0) {
-      const { balance } = expenses[expenses.length - 1];
-      body.balance = balance + amount;
-      expenses[expenses.length - 1].balance = balance + amount;
-      minus = expenses[expenses.length - 1].balance 
-      // console.log("minus", minus)
-    } 
-    else {
-      body.balance = amount;
-    }
-    console.log("sum1", sum);
-    console.log("minus1", minus)
-    body.balance = sum - minus;
-    console.log('result', body.balance)
+  const amount = +body.amount;
+  console.log('amount', amount);
+
+  const incomes = await Transaction.find({
+    type: 'incomes',
+    owner: body.owner,
+  });
+  const expenses = await Transaction.find({
+    type: 'expenses',
+    owner: body.owner,
+  });
+
+  if (type === 'incomes' && incomes.length > 0) {
+    const { incomesBalance } = incomes[incomes.length - 1];
+    body.incomesBalance = incomesBalance + amount;
+    incomes[incomes.length - 1].incomesBalance = incomesBalance + amount;
+    incomesSum = incomes[incomes.length - 1].incomesBalance;
+  } else if (type === 'expenses' && expenses.length > 0) {
+    const { expensesBalance } = expenses[expenses.length - 1];
+    body.expensesBalance = expensesBalance + amount;
+    expenses[expenses.length - 1].expensesBalance = expensesBalance + amount;
+    expensesSum = expenses[expenses.length - 1].expensesBalance;
+  } else if (type === 'incomes' && incomes.length === 0) {
+    body.incomesBalance = amount;
+    incomesSum = amount;
+  } else if (type === 'expenses' && expenses.length === 0) {
+    body.expensesBalance = amount;
+    expensesSum = amount;
+  }
+
+  body.balance = incomesSum - expensesSum;
+
   return await Transaction.create(body);
 };
-
 
 const editTransaction = async (transactionId, body, userId) => {
   return await Transaction.findOneAndUpdate(
@@ -76,7 +82,6 @@ const editTransaction = async (transactionId, body, userId) => {
     { new: true },
   );
 };
-
 
 const deleteTransaction = async (transactionId, userId) => {
   return await Transaction.findOneAndRemove({
