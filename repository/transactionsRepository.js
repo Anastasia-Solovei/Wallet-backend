@@ -1,5 +1,5 @@
 const Transaction = require('../model/transaction_schema');
-const { expensesСategories } = require('../config/constants');
+const { Category } = require('../config/constants');
 const getAllCategories = require('./categoriesRepository');
 
 const getAllTransactions = async userId => {
@@ -23,7 +23,8 @@ const getStatisticsByCategories = arrayTransactions => {
     other: 0,
     incomes: 0,
   };
-  expensesСategories.forEach(categoryExp => {
+
+  Category.expenses.forEach(categoryExp => {
     arrayTransactions.forEach(item => {
       if (item.category === categoryExp) {
         sumCategories[categoryExp] += item.amount;
