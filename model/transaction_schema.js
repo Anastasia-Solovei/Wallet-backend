@@ -7,6 +7,7 @@ const transactionSchema = new Schema(
       type: SchemaTypes.String,
       enum: ['incomes', 'expenses'],
       default: 'incomes',
+      required: true,
     },
     // сумма транзакции
     amount: {
