@@ -52,7 +52,7 @@ const transactionSchema = new Schema(
     },
     category: {
       type: SchemaTypes.String,
-      enum: [...Category.expenses],
+      enum: [...Category.expenses, ...Category.incomes],
       default: Category.incomes[0],
     },
   },
