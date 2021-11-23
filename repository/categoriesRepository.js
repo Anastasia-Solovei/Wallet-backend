@@ -1,8 +1,7 @@
-const Category = require('../model/category_schema');
-const { expensesСategories } = require('../config/constants');
+const { Category } = require('../config/constants');
 
 const getAllCategories = () => {
-  const data = expensesСategories;
+  const data = Category.expenses;
   console.log(data);
   return data;
 };

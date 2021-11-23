@@ -29,33 +29,7 @@ const Category = {
   incomes: ['incomes'],
 };
 
-const expensesСategories = [
-  'main',
-  'food',
-  'car',
-  'me',
-  'children',
-  'house',
-  'education',
-  'leisure',
-  'other',
-];
-
-let initialSumCategories = {
-  main: 0,
-  food: 0,
-  car: 0,
-  me: 0,
-  children: 0,
-  house: 0,
-  education: 0,
-  leisure: 0,
-  other: 0,
-};
-
 module.exports = {
   HttpCode,
-  expensesСategories,
   Category,
-  initialSumCategories,
 };
