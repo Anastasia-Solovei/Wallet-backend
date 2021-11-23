@@ -25,13 +25,18 @@ const getStatisticsByCategories = arrayTransactions => {
   };
   expensesСategories.forEach(categoryExp => {
     arrayTransactions.forEach(item => {
-      if (item.type === 'incomes') {
-        sumCategories.incomes += item.amount;
-      } else if (item.category === categoryExp) {
+      if (item.category === categoryExp) {
         sumCategories[categoryExp] += item.amount;
       }
     });
   });
+
+  arrayTransactions.forEach(item => {
+    if (item.type === 'incomes') {
+      sumCategories.incomes += item.amount;
+    }
+  });
+
   return sumCategories;
 };
 
