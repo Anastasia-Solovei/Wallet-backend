@@ -59,7 +59,8 @@ const addTransaction = async body => {
   });
 
   if (incomes.length === 0 && expenses.length === 0) {
-    body.balance = amount;
+    incomesSum = 0;
+    expensesSum = 0;
   }
 
   if (type === 'incomes' && incomes.length > 0) {
@@ -75,11 +76,9 @@ const addTransaction = async body => {
   } else if (type === 'incomes' && incomes.length === 0) {
     body.incomesBalance = amount;
     incomesSum = amount;
-    expensesSum = 0;
   } else if (type === 'expenses' && expenses.length === 0) {
     body.expensesBalance = amount;
     expensesSum = amount;
-    incomesSum = 0;
   }
 
   body.balance = incomesSum - expensesSum;
