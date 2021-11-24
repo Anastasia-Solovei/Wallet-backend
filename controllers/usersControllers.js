@@ -33,14 +33,18 @@ const signup = async (req, res, next) => {
     //   newUser.emailVerificationToken,
     // );
 
+    console.log(newUser);
+
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
-      data: {
+      user: {
         id: newUser.id,
         name: newUser.name,
         email: newUser.email,
+        isVerified: newUser.isVerified,
       },
+      emailVerificationToken: newUser.emailVerificationToken,
     });
   } catch (e) {
     next(e);
@@ -54,7 +58,7 @@ const login = async (req, res, next) => {
   const isValidPassword = await user?.isValidPassword(password);
 
   if (!user || !isValidPassword) {
-    // || !user?.isVerified)
+    //|| !user?.isVerified)
     return res.status(HttpCode.UNAUTHORIZED).json({
       status: 'error',
       code: HttpCode.UNAUTHORIZED,
@@ -66,13 +70,18 @@ const login = async (req, res, next) => {
   const payload = { id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
   await Users.updateToken(id, token);
+  console.log(user);
 
   return res.status(HttpCode.OK).json({
     status: 'success',
     code: HttpCode.OK,
-    data: {
-      token,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      totalbalance: user.totalbalance,
     },
+    token,
   });
 };
 
@@ -99,77 +108,79 @@ const current = async (req, res, next) => {
   return res.status(HttpCode.OK).json({
     status: 'success',
     code: HttpCode.OK,
-    data: {
-      user: {
-        name: user.name,
-        email: user.email,
-      },
+    user: {
+      name: user.name,
+      email: user.email,
     },
   });
 };
 
-const verifyUser = async (req, res, next) => {
-  const { emailVerificationToken } = req.params;
-  const user = await Users.findUserByVerificationToken(emailVerificationToken);
+// const verifyUser = async (req, res, next) => {
+//   const { emailVerificationToken } = req.params;
+//   const user = await Users.findUserByVerificationToken(emailVerificationToken);
+//   try {
+//     if (!user) {
+//       return res.status(HttpCode.NOT_FOUND).json({
+//         status: 'error',
+//         code: HttpCode.NOT_FOUND,
+//         message: 'User not found!',
+//       });
+//     }
 
-  if (!user) {
-    return res.status(HttpCode.NOT_FOUND).json({
-      status: 'error',
-      code: HttpCode.NOT_FOUND,
-      message: 'User not found!',
-    });
-  }
+//     await Users.updateEmailVerificationToken(user._id, true, null);
+//     // res.redirect('http://localhost:3000/login');
+//     return res.status(HttpCode.OK).json({
+//       status: 'success',
+//       code: HttpCode.OK,
+//       message: 'Verification is successful',
+//     });
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
 
-  await Users.updateEmailVerificationToken(user._id, true, null);
-  return res.status(HttpCode.OK).json({
-    status: 'success',
-    code: HttpCode.OK,
-    message: 'Verification is successful',
-  });
-};
+// const resendVerificationEmail = async (req, res, next) => {
+//   try {
+//     const { email } = req.body;
+//     const user = await Users.findByEmail(email);
+//     const { name, emailVerificationToken } = user;
 
-const resendVerificationEmail = async (req, res, next) => {
-  try {
-    const { email } = req.body;
-    const user = await Users.findByEmail(email);
-    const { name, emailVerificationToken } = user;
+//     if (user.isVerified === false) {
+//       const emailService = new EmailService(
+//         process.env,
+//         new CreateSenderSendGrid(),
+//       );
 
-    if (user.isVerified === false) {
-      const emailService = new EmailService(
-        process.env,
-        new CreateSenderSendGrid(),
-      );
+//       await emailService.sendVerificationEmail(
+//         email,
+//         name,
+//         emailVerificationToken,
+//       );
 
-      await emailService.sendVerificationEmail(
-        email,
-        name,
-        emailVerificationToken,
-      );
+//       return res.status(HttpCode.OK).json({
+//         status: 'success',
+//         code: HttpCode.OK,
+//         message: 'Verification email is sent',
+//       });
+//     }
 
-      return res.status(HttpCode.OK).json({
-        status: 'success',
-        code: HttpCode.OK,
-        message: 'Verification email is sent',
-      });
-    }
-
-    if (user.isVerified === true) {
-      return res.status(HttpCode.BAD_REQUEST).json({
-        status: 'error',
-        code: HttpCode.BAD_REQUEST,
-        message: 'Invalid credentials',
-      });
-    }
-  } catch (err) {
-    next(err);
-  }
-};
+//     if (user.isVerified === true) {
+//       return res.status(HttpCode.BAD_REQUEST).json({
+//         status: 'error',
+//         code: HttpCode.BAD_REQUEST,
+//         message: 'Invalid credentials',
+//       });
+//     }
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 module.exports = {
   signup,
   login,
   logout,
   current,
-  verifyUser,
-  resendVerificationEmail,
+  //verifyUser,
+  //resendVerificationEmail,
 };

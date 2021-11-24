@@ -30,8 +30,8 @@ userRouter.post('/logout', guard, logout);
 // add route of current user
 userRouter.get('/current', guard, current);
 // add route of verification email
-// userRouter.get('/verify/:emailVerificationToken', verifyUser);
+//userRouter.get('/verify/:emailVerificationToken', verifyUser);
 // add route of resending verification email
-// userRouter.post('/verify', validateEmail, resendVerificationEmail);
+//userRouter.post('/verify', validateEmail, resendVerificationEmail);
 
 module.exports = userRouter;

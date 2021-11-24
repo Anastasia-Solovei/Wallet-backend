@@ -7,7 +7,9 @@ const transactionSchema = new Schema(
       type: SchemaTypes.String,
       enum: ['incomes', 'expenses'],
       default: 'incomes',
+      required: true,
     },
+    // сумма транзакции
     amount: {
       type: SchemaTypes.Number,
       min: 0,
@@ -15,14 +17,33 @@ const transactionSchema = new Schema(
     },
     date: {
       type: SchemaTypes.String,
-      default: new Date().toLocaleDateString(),
+      default: new Date(),
+    },
+    day: {
+      type: SchemaTypes.Number,
+    },
+    month: {
+      type: SchemaTypes.Number,
+    },
+    year: {
+      type: SchemaTypes.Number,
     },
     comment: {
       type: SchemaTypes.String,
       default: '',
     },
+    // баланс после транзакции
     balance: {
       type: SchemaTypes.Number,
+      default: 0,
+    },
+    incomesBalance: {
+      type: SchemaTypes.Number,
+      default: 0,
+    },
+    expensesBalance: {
+      type: SchemaTypes.Number,
+      default: 0,
     },
     owner: {
       type: SchemaTypes.ObjectId,
@@ -33,8 +54,7 @@ const transactionSchema = new Schema(
       type: SchemaTypes.String,
       enum: [...Category.expenses, ...Category.incomes],
       default: Category.incomes[0],
-      required: true,
-    }
+    },
   },
   {
     versionKey: false,
@@ -50,6 +70,6 @@ const transactionSchema = new Schema(
   },
 );
 
-const Transaction = model("transaction", transactionSchema);
+const Transaction = model('transaction', transactionSchema);
 
 module.exports = Transaction;
