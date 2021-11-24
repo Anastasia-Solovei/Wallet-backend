@@ -1,15 +1,15 @@
 const Transaction = require('../model/transaction_schema');
 const { Category } = require('../config/constants');
-const getAllCategories = require('./categoriesRepository');
 
+// get all transactions of user
 const getAllTransactions = async userId => {
   return await Transaction.find({ owner: userId });
 };
-
+// get transaction statistic of user
 const getStatistics = async (userId, month, year) => {
   return await Transaction.find({ owner: userId, month: month, year: year });
 };
-
+// get transaction statistic of user by category
 const getStatisticsByCategories = arrayTransactions => {
   const sumCategories = {
     main: 0,
@@ -40,14 +40,12 @@ const getStatisticsByCategories = arrayTransactions => {
 
   return sumCategories;
 };
-
+// add new transaction and get balance of user
 let incomesSum = 0;
 let expensesSum = 0;
 const addTransaction = async body => {
   const { type } = body;
-
   const amount = +body.amount;
-  console.log('amount', amount);
 
   const incomes = await Transaction.find({
     type: 'incomes',
@@ -85,7 +83,7 @@ const addTransaction = async body => {
 
   return await Transaction.create(body);
 };
-
+// update transaction of user
 const editTransaction = async (transactionId, body, userId) => {
   return await Transaction.findOneAndUpdate(
     { _id: transactionId, owner: userId },
@@ -93,7 +91,7 @@ const editTransaction = async (transactionId, body, userId) => {
     { new: true },
   );
 };
-
+// delete transaction of user
 const deleteTransaction = async (transactionId, userId) => {
   return await Transaction.findOneAndRemove({
     _id: transactionId,

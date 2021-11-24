@@ -1,6 +1,7 @@
 const Categories = require('../repository/categoriesRepository');
 const { HttpCode } = require('../config/constants');
 
+// get all categories of transaction
 const getAllCategories = async (req, res, next) => {
   try {
     const userId = req.user._id;

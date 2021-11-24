@@ -2,6 +2,7 @@ const Transactions = require('../repository/transactionsRepository');
 const { HttpCode } = require('../config/constants');
 const { CustomError } = require('../helpers/custom_error');
 
+// get all transactions of user
 const getAllTransactions = async (req, res, next) => {
   try {
     const userId = req.user._id;
@@ -16,6 +17,7 @@ const getAllTransactions = async (req, res, next) => {
   }
 };
 
+// add new transaction of user
 const addTransaction = async (req, res, next) => {
   try {
     const userId = req.user._id;
@@ -33,6 +35,7 @@ const addTransaction = async (req, res, next) => {
   }
 };
 
+// get transaction statistics of user by month
 const getStatisticsByMonth = async (req, res, next) => {
   try {
     const { month, year } = req.query;
@@ -49,6 +52,7 @@ const getStatisticsByMonth = async (req, res, next) => {
   }
 };
 
+// update transaction by ID of user
 const editTransactionById = async (req, res, next) => {
   const userId = req.user._id;
   const transaction = await Transactions.editTransaction(
@@ -65,6 +69,7 @@ const editTransactionById = async (req, res, next) => {
   throw new CustomError(404, 'Not Found');
 };
 
+// delete transaction by ID of user
 const deleteTransactionById = async (req, res) => {
   const userId = req.user._id;
   const transaction = await Transactions.deleteTransaction(
@@ -83,9 +88,7 @@ const deleteTransactionById = async (req, res) => {
 module.exports = {
   getAllTransactions,
   addTransaction,
-
   getStatisticsByMonth,
-
   editTransactionById,
   deleteTransactionById,
 };

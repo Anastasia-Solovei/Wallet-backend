@@ -1,11 +1,8 @@
 const jwt = require('jsonwebtoken');
-const Users = require('../repository/usersRepository');
-const { HttpCode } = require('../config/constants');
 require('dotenv').config();
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
-const { CustomError } = require('../helpers/custom_error');
-const EmailService = require('../services/email/service');
-const CreateSenderSendGrid = require('../services/email/sender');
+const { HttpCode } = require('../config/constants');
+const Users = require('../repository/usersRepository');
 
 // add registration controller
 const signup = async (req, res, next) => {
@@ -21,20 +18,6 @@ const signup = async (req, res, next) => {
 
   try {
     const newUser = await Users.create({ name, email, password });
-    // sending email to verify user
-    // const emailService = new EmailService(
-    //   process.env,
-    //   new CreateSenderSendGrid(),
-    // );
-
-    // await emailService.sendVerificationEmail(
-    //   newUser.email,
-    //   newUser.name,
-    //   newUser.emailVerificationToken,
-    // );
-
-    console.log(newUser);
-
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
@@ -42,9 +25,7 @@ const signup = async (req, res, next) => {
         id: newUser.id,
         name: newUser.name,
         email: newUser.email,
-        isVerified: newUser.isVerified,
       },
-      emailVerificationToken: newUser.emailVerificationToken,
     });
   } catch (e) {
     next(e);
@@ -58,7 +39,6 @@ const login = async (req, res, next) => {
   const isValidPassword = await user?.isValidPassword(password);
 
   if (!user || !isValidPassword) {
-    //|| !user?.isVerified)
     return res.status(HttpCode.UNAUTHORIZED).json({
       status: 'error',
       code: HttpCode.UNAUTHORIZED,
@@ -70,7 +50,6 @@ const login = async (req, res, next) => {
   const payload = { id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
   await Users.updateToken(id, token);
-  console.log(user);
 
   return res.status(HttpCode.OK).json({
     status: 'success',
@@ -115,72 +94,9 @@ const current = async (req, res, next) => {
   });
 };
 
-// const verifyUser = async (req, res, next) => {
-//   const { emailVerificationToken } = req.params;
-//   const user = await Users.findUserByVerificationToken(emailVerificationToken);
-//   try {
-//     if (!user) {
-//       return res.status(HttpCode.NOT_FOUND).json({
-//         status: 'error',
-//         code: HttpCode.NOT_FOUND,
-//         message: 'User not found!',
-//       });
-//     }
-
-//     await Users.updateEmailVerificationToken(user._id, true, null);
-//     // res.redirect('http://localhost:3000/login');
-//     return res.status(HttpCode.OK).json({
-//       status: 'success',
-//       code: HttpCode.OK,
-//       message: 'Verification is successful',
-//     });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
-// const resendVerificationEmail = async (req, res, next) => {
-//   try {
-//     const { email } = req.body;
-//     const user = await Users.findByEmail(email);
-//     const { name, emailVerificationToken } = user;
-
-//     if (user.isVerified === false) {
-//       const emailService = new EmailService(
-//         process.env,
-//         new CreateSenderSendGrid(),
-//       );
-
-//       await emailService.sendVerificationEmail(
-//         email,
-//         name,
-//         emailVerificationToken,
-//       );
-
-//       return res.status(HttpCode.OK).json({
-//         status: 'success',
-//         code: HttpCode.OK,
-//         message: 'Verification email is sent',
-//       });
-//     }
-
-//     if (user.isVerified === true) {
-//       return res.status(HttpCode.BAD_REQUEST).json({
-//         status: 'error',
-//         code: HttpCode.BAD_REQUEST,
-//         message: 'Invalid credentials',
-//       });
-//     }
-//   } catch (err) {
-//     next(err);
-//   }
-// };
-
 module.exports = {
   signup,
   login,
   logout,
   current,
-  //verifyUser,
-  //resendVerificationEmail,
 };

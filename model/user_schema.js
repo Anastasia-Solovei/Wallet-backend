@@ -1,16 +1,14 @@
 const { Schema, model, SchemaTypes } = require('mongoose');
+const crypto = require('crypto');
 // Add bcrypt package
 const bcrypt = require('bcryptjs');
 const SALT_FACTOR = 6;
-const crypto = require('crypto');
 
-// Add name , balance field
 const userSchema = new Schema(
   {
     name: {
       type: String,
       required: [true, 'Set name for user'],
-      unique: true,
     },
     password: {
       type: String,
@@ -33,15 +31,6 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
-    // isVerified: {
-    //   type: Boolean,
-    //   default: false,
-    // },
-    // emailVerificationToken: {
-    //   type: String,
-    //   required: [true, 'Verification token is required'],
-    //   default: crypto.randomUUID(),
-    // },
   },
   {
     versionKey: false,

@@ -1,9 +1,9 @@
 const User = require('../model/user_schema');
-// add non duplicate user id
+// search user in DB by ID
 const findById = async id => {
   return await User.findById(id);
 };
-// add non duplicate user email
+// search user in DB by email
 const findByEmail = async email => {
   return await User.findOne({ email });
 };
@@ -16,27 +16,10 @@ const create = async options => {
 const updateToken = async (id, token) => {
   return await User.updateOne({ _id: id }, { token });
 };
-// add updateEmailVerificationToken for user
-const updateEmailVerificationToken = async (
-  id,
-  isVerified,
-  emailVerificationToken,
-) => {
-  return await User.updateOne(
-    { _id: id },
-    { isVerified, emailVerificationToken },
-  );
-};
-
-const findUserByVerificationToken = async emailVerificationToken => {
-  return await User.findOne({ emailVerificationToken });
-};
 
 module.exports = {
   findById,
   findByEmail,
   create,
   updateToken,
-  updateEmailVerificationToken,
-  findUserByVerificationToken,
 };

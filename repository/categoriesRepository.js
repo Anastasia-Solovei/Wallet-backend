@@ -1,8 +1,8 @@
 const { Category } = require('../config/constants');
 
+// get all transactions categories
 const getAllCategories = () => {
   const data = Category.expenses;
-  console.log(data);
   return data;
 };
 

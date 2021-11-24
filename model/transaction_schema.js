@@ -9,7 +9,6 @@ const transactionSchema = new Schema(
       default: 'incomes',
       required: true,
     },
-    // сумма транзакции
     amount: {
       type: SchemaTypes.Number,
       min: 0,
@@ -32,7 +31,6 @@ const transactionSchema = new Schema(
       type: SchemaTypes.String,
       default: '',
     },
-    // баланс после транзакции
     balance: {
       type: SchemaTypes.Number,
       default: 0,

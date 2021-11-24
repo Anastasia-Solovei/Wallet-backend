@@ -10,14 +10,19 @@ const {
   getStatisticsByMonth,
 } = require('../../controllers/transactionsControllers');
 
+// get all transaction list
 transactionsRouter.get('/all', guard, getAllTransactions);
+// add new transaction
 transactionsRouter.post('/new', guard, addTransaction);
+// get transaction statistic by month
 transactionsRouter.get('/statistics/', guard, getStatisticsByMonth);
+// update transaction
 transactionsRouter.patch(
   '/:transactionId',
   guard,
   wrapError(editTransactionById),
 );
+// delete transaction
 transactionsRouter.delete(
   '/:transactionId',
   guard,
