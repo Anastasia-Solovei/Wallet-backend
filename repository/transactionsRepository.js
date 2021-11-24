@@ -58,6 +58,10 @@ const addTransaction = async body => {
     owner: body.owner,
   });
 
+  if (incomes.length === 0 && expenses.length === 0) {
+    body.balance = amount;
+  }
+
   if (type === 'incomes' && incomes.length > 0) {
     const { incomesBalance } = incomes[incomes.length - 1];
     body.incomesBalance = incomesBalance + amount;
@@ -71,9 +75,11 @@ const addTransaction = async body => {
   } else if (type === 'incomes' && incomes.length === 0) {
     body.incomesBalance = amount;
     incomesSum = amount;
+    expensesSum = 0;
   } else if (type === 'expenses' && expenses.length === 0) {
     body.expensesBalance = amount;
     expensesSum = amount;
+    incomesSum = 0;
   }
 
   body.balance = incomesSum - expensesSum;
