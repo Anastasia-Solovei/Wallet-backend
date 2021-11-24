@@ -17,7 +17,7 @@ const transactionSchema = new Schema(
     },
     date: {
       type: SchemaTypes.String,
-      default: new Date().toLocaleDateString(),
+      default: new Date(),
     },
     day: {
       type: SchemaTypes.Number,
